@@ -32,7 +32,7 @@ python -m venv _venv && source _venv/bin/activate            # Windows: _venv\Sc
 pip install -r requirements.txt
 cd src
 python manage.py migrate --noinput
-python manage.py import_fuel_prices ../prompts/fuel-prices-for-be-assessment.csv
+python manage.py import_fuel_prices ../data/fuel-prices-for-be-assessment.csv
 python manage.py load_demo_fixture                          # demo station coordinates (honest labels)
 python manage.py runserver 127.0.0.1:8000
 ```
@@ -211,7 +211,7 @@ Coverage: sufficient for Chicago → Denver Loom example.
 
 ```bash
 cd src
-python manage.py geocode_stations --csv ../prompts/fuel-prices-for-be-assessment.csv \
+python manage.py geocode_stations --csv ../data/fuel-prices-for-be-assessment.csv \
     --limit 100 --pacing-seconds 1.0
 
 # or (may take very long + subject to provider usage policies):
