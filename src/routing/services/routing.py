@@ -114,8 +114,8 @@ class OSRMRoutingProvider(RoutingProvider):
 
 class CachedRoutingProvider(RoutingProvider):
     def __init__(self, inner: RoutingProvider) -> None:
-        super().__init__()
         self.inner = inner
+        super().__init__()
 
     @property
     def external_calls(self) -> int:

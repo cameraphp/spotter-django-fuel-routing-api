@@ -15,6 +15,17 @@ from routing.models import GeocodeCache
 from routing.services.errors import ProviderError, ProviderTimeout
 
 
+class _DecimalSafeEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, Decimal):
+            return f'{o:f}'
+        return super().default(o)
+
+
+def _json_dumps_safe(value: Any) -> str:
+    return json.dumps(value, cls=_DecimalSafeEncoder, sort_keys=True)
+
+
 @dataclass
 class GeocodeResult:
     latitude: Decimal | None
@@ -133,8 +144,8 @@ class NominatimGeocoder(GeocodeProvider):
 
 class CachedGeocoder(GeocodeProvider):
     def __init__(self, inner: GeocodeProvider) -> None:
-        super().__init__()
         self.inner = inner
+        super().__init__()
 
     @property
     def external_calls(self) -> int:
@@ -145,7 +156,7 @@ class CachedGeocoder(GeocodeProvider):
         self.inner.external_calls = value
 
     def geocode(self, query: str, country_codes: str | None = 'us') -> GeocodeResult:
-        q_input = json.dumps({'q': query, 'cc': country_codes}, sort_keys=True)
+        q_input = _json_dumps_safe({'q': query, 'cc': country_codes})
         key = _cache_key('geocode', q_input)
         cached = GeocodeCache.objects.filter(cache_key=key).first()
         if cached is not None:
@@ -169,12 +180,12 @@ class CachedGeocoder(GeocodeProvider):
             display_name=result.display_name,
             country_code=result.country_code,
             state_code=result.state_code,
-            raw_json=json.dumps(result.raw) if result.raw else None,
+            raw_json=_json_dumps_safe(result.raw) if result.raw else None,
         )
         return result
 
     def reverse(self, latitude: Decimal, longitude: Decimal) -> GeocodeResult:
-        q_input = json.dumps({'lat': str(latitude), 'lon': str(longitude)}, sort_keys=True)
+        q_input = _json_dumps_safe({'lat': str(latitude), 'lon': str(longitude)})
         key = _cache_key('reverse', q_input)
         cached = GeocodeCache.objects.filter(cache_key=key).first()
         if cached is not None:
@@ -198,6 +209,6 @@ class CachedGeocoder(GeocodeProvider):
             display_name=result.display_name,
             country_code=result.country_code,
             state_code=result.state_code,
-            raw_json=json.dumps(result.raw) if result.raw else None,
+            raw_json=_json_dumps_safe(result.raw) if result.raw else None,
         )
         return result

@@ -1,0 +1,14 @@
+{
+  "start": {
+    "lat": 35.120479,
+    "lon": -97.944545
+  },
+  "finish": {
+    "lat": 35.737194,
+    "lon": -97.770301
+  },
+  "vehicle": {
+    "max_range_miles": 500,
+    "miles_per_gallon": 10
+  }
+}

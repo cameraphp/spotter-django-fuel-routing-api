@@ -12,7 +12,7 @@ Narrator voice: calm, structured, honest about demo fixture provenance, uses `co
 **Step 2 — Data Prep: Import + Load Demo Fixture (0:25 → 1:00, 35 s)**
 - Run `cd src`.
 - Run `python manage.py migrate --noinput`. (keep silent if already migrated)
-- Run `python manage.py import_fuel_prices ../prompts/fuel-prices-for-be-assessment.csv` → show counts ~8,151 rows imported + strict-Decimal invalid reporting.
+- Run `python manage.py import_fuel_prices ../data/fuel-prices-for-be-assessment.csv` → show counts ~8,151 rows imported + strict-Decimal invalid reporting.
 - **[Honest provenance speech]** Run `python manage.py load_demo_fixture`. *Narration:* "This loads the 200-record demo fixture. The coordinates are labeled by the fixture itself as `approximate_corridor_placements_for_demo_only` — they are not Nominatim address-level geocodes, they are not city centroids, they are deterministic approximate corridor placements meant strictly for this assessment demo. The 428 error (shown later) requires EITHER this fixture OR the operator to run `geocode_stations` before planning routes." Mention the 12-line yellow banner that the command prints.
 - `stations_with_coordinates` becomes 200.
 

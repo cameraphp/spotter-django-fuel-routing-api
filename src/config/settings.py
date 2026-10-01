@@ -11,7 +11,9 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-insecure-change-me-in-productio
 
 DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = ['*'] if DEBUG else []
+ALLOWED_HOSTS = ['*'] if DEBUG else os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+
+
 
 INSTALLED_APPS = [
     'django.contrib.contenttypes',
